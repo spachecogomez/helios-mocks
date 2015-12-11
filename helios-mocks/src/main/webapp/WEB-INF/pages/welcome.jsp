@@ -24,7 +24,7 @@
 		                <c:choose>
 		                    <c:when test="${items.value.isFile}">
 		                        <c:if test="${items.value.isFile}">
-		                        	<c:out value="[file]" /><a href='<c:url value='/list/${items.key}' />'><c:out value="${items.value.path}"/></a><br/>
+		                        	<c:out value="[file]" /><a href='<c:url value='/file/${items.key}' />'><c:out value="${items.value.path}"/></a><br/>
 	                        	</c:if>
 		                    </c:when>
 		                    <c:otherwise>

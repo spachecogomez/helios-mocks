@@ -5,24 +5,24 @@
  */
 package com.digitaslbi.helios.mock.service.controllers;
 
-import com.digitaslbi.helios.mock.constants.MocksConstants;
-import com.digitaslbi.helios.mock.delegates.S3Delegate;
-import com.digitaslbi.helios.mock.dto.File;
-import com.digitaslbi.helios.mock.utils.ConnectionHelper;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
+
+import com.digitaslbi.helios.mock.constants.MocksConstants;
+import com.digitaslbi.helios.mock.delegates.S3Delegate;
+import com.digitaslbi.helios.mock.dto.File;
 
 /**
  *
@@ -54,4 +54,28 @@ public class FileListingController {
         
         return new ModelAndView("welcome", "message", files);
     }
+
+    @RequestMapping(value = "/file/{fileName}", method = RequestMethod.GET)
+    public void downloadFile(@PathVariable("fileName") String fileName, 
+    	    HttpServletResponse response) {
+        System.out.println("Parameter->"+fileName);
+        try {
+	        File selectedFile = (File) files.get(fileName);
+	        
+	        if (selectedFile != null && selectedFile.isIsFile()) {
+	        	InputStream inputStream = delegate.getS3Object(selectedFile.getFullPath());
+	        	
+	        	if(inputStream != null) {
+		        	IOUtils.copy(inputStream, response.getOutputStream());
+					
+		        	response.flushBuffer();
+	        	}
+	        }
+        } catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+
 }

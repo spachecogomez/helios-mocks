@@ -9,6 +9,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ListObjectsRequest;
 import com.digitaslbi.helios.mock.dto.File;
 import com.digitaslbi.helios.mock.utils.ConnectionHelper;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,10 @@ public class S3Delegate {
     
     public Map getFilesByPath(String path, String parentPath) {
         return ConnectionHelper.getFilesByPath(path, parentPath);
+    }
+    
+    public static InputStream getS3Object(String path) {
+    	return ConnectionHelper.getObject(path);
     }
     
 }

@@ -263,17 +263,16 @@ public class ConnectionHelper {
 	    }
 	}
     
-	public static void getObject(String bucketName,String key){
+    public static InputStream getObject(String key) {
 		try {
 			log.debug("Downloading an object");
             
-			S3Object s3object = s3Client.getObject(new GetObjectRequest(
-					bucketName, key));
+			S3Object s3object = s3Client.getObject(new GetObjectRequest(prop.getProperty(MocksConstants.AWS_BUCKET_NAME.getValue()), key));
 			
-            log.debug("Content-Type: "  + 
-            		s3object.getObjectMetadata().getContentType());
-            displayTextInputStream(s3object.getObjectContent());
+            log.debug("Content-Type: "  + s3object.getObjectMetadata().getContentType());
+            //displayTextInputStream(s3object.getObjectContent());
             
+            return s3object.getObjectContent();            
         } catch (AmazonServiceException ase) {
         	log.error("Caught an AmazonServiceException, which" +
             		" means your request made it " +
@@ -291,26 +290,11 @@ public class ConnectionHelper {
                     "communicate with S3, " +
                     "such as not being able to access the network.");
         	log.error("Error Message: " + ace.getMessage());
-        } catch (IOException e) {
-			// TODO Auto-generated catch block
-        	log.error(e);
-		}
-	}
-	
-	private static void displayTextInputStream(InputStream input)
-		    throws IOException {
-    	// Read one text line at a time and display.
-        BufferedReader reader = new BufferedReader(new 
-        		InputStreamReader(input));
-        
-        while (true) {
-            String line = reader.readLine();
-            if (line == null) break;
-            log.debug("    " + line);
         }
-        System.out.println();
-    }
-	
+		
+		return null;
+	}
+
     public static void main(String[] args) {
         getFilesByPath("/mocks", null);
     }
