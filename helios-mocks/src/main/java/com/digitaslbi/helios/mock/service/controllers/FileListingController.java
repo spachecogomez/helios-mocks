@@ -43,15 +43,15 @@ public class FileListingController {
 
     @RequestMapping(value = "/list/{path}", method = RequestMethod.GET)
     public ModelAndView listFiles(@PathVariable("path") String path) {
-        System.out.println("Parameter->"+path);
+    	System.out.println("Parameter->"+path);
         System.out.println("Parameter/->" + (path.contains(MocksConstants.AWS_PARENT_DELIMITER.getValue())? path: path+MocksConstants.AWS_PARENT_DELIMITER.getValue()));
-        File selectedFile = null;
-        if(!path.contains(MocksConstants.JSON_FILE_EXTENSION.getValue())){
-            selectedFile = (File) files.get((path.contains(MocksConstants.AWS_PARENT_DELIMITER.getValue())? path: path+MocksConstants.AWS_PARENT_DELIMITER.getValue()));
-            files = delegate.getFilesByPath(selectedFile.getFullPath());
-        }else{
-            selectedFile = (File) files.get(path);
+        
+        File selectedFile = (File) files.get(path);
+        
+        if (selectedFile != null) {
+        	files = delegate.getFilesByPath(selectedFile.getFullPath(), selectedFile.getParent());
         }
+        
         return new ModelAndView("welcome", "message", files);
     }
 }

@@ -17,9 +17,10 @@ public class File implements Comparable<File>{
     
     private String parent;
     
-    private boolean isFile ;
+    private boolean isFile;
 
-    
+    private boolean isParent;
+
     
     @Override
     public int compareTo(File o) {
@@ -86,6 +87,18 @@ public class File implements Comparable<File>{
         this.isFile = isFile;
     }
     
-    
-    
+    /**
+     * @return the isParent
+     */
+    public boolean isIsParent() {
+        return isParent;
+    }
+
+    /**
+     * @param isParent the isParent to set
+     */
+    public void setIsParent(boolean isParent) {
+        this.isParent = isParent;
+    }
+
 }

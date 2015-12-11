@@ -19,14 +19,12 @@ import java.util.Map;
  */
 public class S3Delegate {
     
-    
     public Map getFilesRootFolder(){
         return ConnectionHelper.getRootFiles() ;
     }
     
-    
-    public Map getFilesByPath(String path){
-        return ConnectionHelper.getFilesByPath(path) ;
+    public Map getFilesByPath(String path, String parentPath) {
+        return ConnectionHelper.getFilesByPath(path, parentPath);
     }
     
 }
